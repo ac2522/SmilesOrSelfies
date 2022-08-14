@@ -25,3 +25,35 @@ If your PC does not have a GPU or has a GPU incompatible with CUDA<=10.2, follow
 
 
 https://github.com/pschwllr/MolecularTransformer
+
+
+Step 1) Create Instance CUDA 10.1/10.2 compatable instance (Identify the GPU and check https://www.nvidia.com/Download/Find.aspx). For ease choose an AMI with CUDA 10.2 pre-installed (Deep Learning AMI (Amazon Linux 2) Version 49.0), this means g5's arent compaable as they use
+
+Step 2) launch instance
+
+Ensure correct Cuda version (with above you need to change version, by deleting old and copying 10.2 into folder)
+
+SET UP ANACONDA - this is an oddly complex task - https://phoenixnap.com/kb/how-to-install-anaconda-ubuntu-18-04-or-20-04
+Slect right version - hashes https://docs.anaconda.com/anaconda/install/hashes/Anaconda3-2019.03-Linux-x86_64.sh-hash/
+
+export PATH=/home/ubuntu/anaconda3/bin:$PATH
+
+Create conda -name python=3.6
+
+conda install git
+git clone
+conda install pytorch line
+conda install requirements
+
+preprocess
+generate vocab
+train
+inference
+test
+nohup & so can be used simultaneously 
+
+
+opennmt-tf
+Cuda requirement
+
+g5 may be most cost efficeint
