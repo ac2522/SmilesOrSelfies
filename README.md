@@ -27,18 +27,52 @@ If your PC does not have a GPU or has a GPU incompatible with CUDA<=10.2, follow
 https://github.com/pschwllr/MolecularTransformer
 
 
-Step 1) Create Instance CUDA 10.1/10.2 compatable instance (Identify the GPU and check https://www.nvidia.com/Download/Find.aspx). For ease choose an AMI with CUDA 10.2 pre-installed (Deep Learning AMI (Amazon Linux 2) Version 49.0), this means g5's arent compaable as they use
+Step 1) Create Instance CUDA 10.1/10.2 compatable instance (Identify the GPU and check https://www.nvidia.com/Download/Find.aspx). For ease choose an AMI with CUDA 10.2 pre-installed (Deep Learning AMI (Amazon Linux 2) Version 49.0), this means g5's arent compatable as they use
 
 Step 2) launch instance
 
 Ensure correct Cuda version (with above you need to change version, by deleting old and copying 10.2 into folder)
 
+sudo rm /usr/local/cuda
+sudo ln -s /usr/local/cuda-10.2 /usr/local/cuda
+export PATH=/home/ubuntu/.local/bin:$PATH
+
+
+
 SET UP ANACONDA - this is an oddly complex task - https://phoenixnap.com/kb/how-to-install-anaconda-ubuntu-18-04-or-20-04
 Slect right version - hashes https://docs.anaconda.com/anaconda/install/hashes/Anaconda3-2019.03-Linux-x86_64.sh-hash/
 
 export PATH=/home/ubuntu/anaconda3/bin:$PATH
+export PATH=/home/ubuntu/anaconda3/bin:$PATH
 
-Create conda -name python=3.6
+
+## Set up environment
+```
+conda update conda
+Create conda -n [NAME] python=3.6
+
+
+conda activate [NAME]
+conda install rdkit -c rdkit
+conda install future six tqdm pandas -y
+conda install pytorch==1.6.0 torchvision==0.7.0 cudatoolkit=10.2 -c pytorch
+conda install pip git -y
+pip install selfies
+```
+### Set up OpenNMT (Current version)
+```
+git clone https://github.com/OpenNMT/OpenNMT-py.git
+```
+
+
+
+
+
+
+
+
+
+
 
 conda install git
 git clone
