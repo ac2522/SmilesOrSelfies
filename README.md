@@ -208,11 +208,20 @@ for dataset in ["", "mit-", "common-", ]:
 
 
 ### OpenNMT-tf
-Based on a Windows 10 setup
+Based on a Windows 10 setup. Sorry, I kind of ran out of time for this part.
 Step 1)
- * Install Cuda
- * Install CuDNN
- * Install Anaconda
- * Setup conda environment
- * Clone
+* Install Cuda
+* Install CuDNN
+* Install Anaconda
+* Setup conda environment
+* ```git clone https://github.com/OpenNMT/OpenNMT-tf.git```
+* ```git clone https://github.com/ac2522/SmilesOrSelfies.git```
+
+Step 2) 
+* Processing the data is the same as OpenNMT-py
+* Create a vocabulary
+  * May need slight adjustments to paths
+* To train run tf_configs/train.py
+  * May need slight adjustments to paths
+  * Also running the evaluation will need some parametization 
 
