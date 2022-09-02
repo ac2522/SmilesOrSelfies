@@ -26,12 +26,6 @@ Also it's worth condisdering the size of the GPU's VRAM, and whether it is suffi
 
 If your PC does not have a GPU or has a GPU incompatible with the specified TensorFlow versions, set up with OpenNMT-py.
 
-### OpenNMT-tf
-
-
-
-
-
 
 ### OpenNMT-py
 This section covers how to set up an environment on AWS EC2. It can obviously be set up on any server, but AWS is the most global (and Google Cloud holds prejudicial views towards students)  
@@ -100,14 +94,17 @@ Step 4) Set up environment for OpenNMT-py
   * The Python version has to be compatible with CUDA 10.2, your version of OpenNMT-py and PyTorch 1.6.0
 * ```conda activate transformer```
 * ```conda install pip```
-* ```pip3 install git```
+* ```conda install git```
 * ```git clone https://github.com/OpenNMT/OpenNMT-py.git```
 * ```git clone https://github.com/ac2522/SmilesOrSelfies.git```
 * ```cd OpenNMT-py```
 * ```pip3 install -e```
 * ```cd ../SmilesOrSelfies```
 * ```pip3 install -e```
+* ```conda install pytorch==1.6.0 torchvision==0.7.0 cudatoolkit=10.2 -c pytorch```
+ * Install the right pytorch, from the same link as Step 3) but for Conda this time  
 * Move the data folder from /home/ubuntu/SmilesOrSelfies to /home/ubuntu/
+* Move the config folder from /home/ubuntu/SmilesOrSelfies to /home/ubuntu/
 * Download the USPTO data and place in the data folder
   * For the sake of convenience (and memory) delete all USPTO directories, bar STEREO_mixed and MIT_mixed
    * Within MIT_mixed you might as well delete all but the test data
@@ -148,7 +145,8 @@ transformSmilesData(SMILES_PATH, randomizeSmiles, new_path=SMILES_AUG_PATH, shuf
 # Checks all data transformations/conversions worked
 checkFormatting(NAMES, 5, [SMILES_PATH, SMILES_AUG_PATH, SELFIES_PATH, DEEPSMILES_PATH])
 
-exit()```
+exit()
+```
 
 
 Step 6) Run the Machine
@@ -160,77 +158,31 @@ Step 6) Run the Machine
   * Click 'actions' -> 'Image and Templates' -> Create Image
   * Give it a name, then 'Create Image'
   * Create a new instance, the same as the original
-   * EXCEPT instead of the Deep Learning AMI, select 'My AMI' and scroll down to find the one you just created 
+  * EXCEPT instead of the Deep Learning AMI, select 'My AMI' and scroll down to find the one you just created
+  * It will take some time to load so be patient
+* Create a vocabulary (Example for SMILES, but same process for each)
+  * ```nohup python OpenNMT-py/build_vocab.py -config configs/SMILES/vocab_config.yaml -n_sample -1 &```
+   * ```n_sample``` is the size of vocabulary, and will have an impact on the speed and memory consumption. Setting it to -1, means that all tokens in the source and target data are added to the vocabulary
+   * The parametrization for training and forming a vocabulary is done with .yaml config files
+   * To allow processes to continue while our connection to the server is down, we use the command ```nohup```. To stop a process from happening: ```kill {PID number}``` - the PID number can be found by running ```nvidia-smi```  
+   * The source and target share the same vocabulary
+* Train model - this will take roughly 48 hours
+  * ```nohup python OpenNMT-py/train.py -config configs/SMILES/train_config.yaml &```
+  * If the model stops at any point, you don't have to restart, instead find the last full checkpoint, then:
+   * ```nohup python OpenNMT-py/train.py -config configs/SMILES/train_config.yaml -from_checkpoint data/SMILES/model_step_23000.pt &```
+  * Run ```nvidia-smi``` to check GPU and memory usage 
+* Average last 20 checkpoints
+  * ```OpenNMT-py/tools/average_models.py -models model_step_310000.pt model_step_320000.pt model_step_330000.pt model_step_340000.pt model_step_350000.pt model_step_360000.pt model_step_370000.pt model_step_380000.pt model_step_390000.pt model_step_400000.pt model_step_410000.pt model_step_420000.pt model_step_430000.pt model_step_440000.pt model_step_450000.pt model_step_460000.pt model_step_470000.pt model_step_480000.pt model_step_490000.pt model_step_500000.pt -output data/SMILES/model_avg.pt```
+* Translate test results (for STEREO, MIT and common datasets) - I was too lazy to write 4 more .yaml files
+  * ```nohup  python OpenNMT-py/translate.py -model data/SMILES/model_avg.pt -src src-test.txt -output test_results.txt -beam_size 10 -n_best 10 -batch_size 30 -max_length 500 -gpu 0 &```
+  * ```nohup  python OpenNMT-py/translate.py -model data/SMILES/model_avg.pt -src mit-src-test.txt -output mit-test_results.txt -beam_size 10 -n_best 10 -batch_size 30 -max_length 500 -gpu 0 &```
+  * ```nohup  python OpenNMT-py/translate.py -model data/SMILES/model_avg.pt -src common-src-test.txt -output common-test_results.txt -beam_size 10 -n_best 10 -batch_size 30 -max_length 500 -gpu 0 &```
+   * Beam size has to be greater than n_best
+   * N_best is the number of predictions made for each reaction, can be changed as per use case. n_best should be inversely proportional to the batch_size
 
-
-
-export PATH=/home/ubuntu/anaconda3/bin:$PATH
-export PATH=/home/ubuntu/anaconda3/bin:$PATH
-
-
-## Set up environment
-```
-conda update conda
-Create conda -n [NAME] python=3.6
-
-
-conda activate [NAME]
-conda install rdkit -c rdkit
-conda install future six tqdm pandas -y
-conda install pytorch==1.6.0 torchvision==0.7.0 cudatoolkit=10.2 -c pytorch
-conda install pip git -y
-pip install selfies
-```
-### Set up OpenNMT (Current version)
-```
-git clone https://github.com/OpenNMT/OpenNMT-py.git
-```
-
-
-
-
-
-
-
-
-
-
-
-conda install git
-git clone
-conda install pytorch line
-conda install requirements
-
-preprocess
-generate vocab
-train
-inference
-test
-nohup & so can be used simultaneously 
-
-
-opennmt-tf
-Cuda requirement
-
-g5 may be most cost efficeint
-
-
-
-
-
-
-
-
-
-
-Running from command line "nohup....
-
-Running from Ipykernel or Ipbny or python file:
-     !python
-
-
-## Convergence
-
+Step 7) Score the Results
+* Combine all the results, by just copying and pasting predictions into one instance
+* ```ipython```
 ```
 from score import canonDeepSmiles, canonSMILES, canonSelfies, inferenceAnalysis
 import pandas as pd
@@ -252,5 +204,15 @@ for dataset in ["", "mit-", "common-", ]:
     print("Errors:")
     print(pd.DataFrame(errors, index=langs))
 ```
+* This will print out the accuracy and errors for each representation for each database tested upon.
 
-This will print out the accuracy and errors for each representation for each database tested upon.
+
+### OpenNMT-tf
+Based on a Windows 10 setup
+Step 1)
+ * Install Cuda
+ * Install CuDNN
+ * Install Anaconda
+ * Setup conda environment
+ * Clone
+
