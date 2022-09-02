@@ -91,3 +91,20 @@ opennmt-tf
 Cuda requirement
 
 g5 may be most cost efficeint
+
+
+
+
+
+
+
+
+
+
+Running from command line "nohup....
+
+Running from Ipykernel or Ipbny or python file:
+     !python
+
+
+
