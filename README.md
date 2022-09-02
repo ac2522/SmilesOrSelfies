@@ -63,50 +63,50 @@ Step 2) launch instance
 
 Step 3) Set up server
 * Many of the AMI's such as Deep Learning V49, have multiple CUDA versions installed.
-  * Check cuda version with '''nvcc --version'''
+  * Check cuda version with ```nvcc --version```
   * If the starting version isn't correct, you will need to change version, by deleting old and copying 10.1/10.2 into the CUDA folder
-   * '''sudo rm /usr/local/cuda'''
-   * '''sudo ln -s /usr/local/cuda-10.2 /usr/local/cuda'''
+   * ```sudo rm /usr/local/cuda```
+   * ```sudo ln -s /usr/local/cuda-10.2 /usr/local/cuda```
 * Check cuda is running:
-  * '''pip3 install torch==1.6.0 torchvision==0.7.0'''
+  * ```pip3 install torch==1.6.0 torchvision==0.7.0```
    * Your pytorch install command will depend on your CUDA and OS: https://pytorch.org/get-started/previous-versions/  
-  * Open Python terminal with '''ipython'''
-  * '''import torch'''
-  * '''torch.cuda.is_available()'''
+  * Open Python terminal with ```ipython```
+  * ```import torch```
+  * ```torch.cuda.is_available```
    * If True then it's working, if False, then you'll need to do some error testing.
-  * Top exit ipython '''exit()'''  
+  * Top exit ipython ```exit()```  
 * Typical Linux commands to initialize environment: 
-  * '''sudo apt-get upgrade'''
-  * '''sudo apt-get update'''
-  * '''sudo apt-get install curl'''
-  * '''export PATH=/home/ubuntu/.local/bin:$PATH'''
+  * ```sudo apt-get upgrade```
+  * ```sudo apt-get update```
+  * ```sudo apt-get install curl```
+  * ```export PATH=/home/ubuntu/.local/bin:$PATH```
   * Depending on the os, sometimes 'sudo' is replaced by 'yum'
 * Setting up Anaconda is an oddly complex task, you can follow the full guide here - https://phoenixnap.com/kb/how-to-install-anaconda-ubuntu-18-04-or-20-04
   * The right Anaconda hash can be found here: https://docs.anaconda.com/anaconda/install/hashes/Anaconda3-2019.03-Linux-x86_64.sh-hash/
   * The commands I used (My Linux expertise is limited, so I can't tell you what did what)
-  * '''cd /tmp'''
-  * '''curl –O https://repo.anaconda.com/archive/Anaconda3-2022.05-Linux-x86_64.sh'''
+  * ```cd /tmp```
+  * ```curl –O https://repo.anaconda.com/archive/Anaconda3-2022.05-Linux-x86_64.sh```
    * Theres a number of simple prompts, you need to answer yes to.
-  * '''sha256sum Anaconda3-2022.05-Linux-x86_64.sh'''
-  * '''sudo wget https://repo.anaconda.com/archive/Anaconda3-2022.05-Linux-x86_64.sh'''
-  * '''bash Anaconda3-2022.05-Linux-x86_64.sh'''
-  * '''source ~/.bashrc'''
-  * '''bash Anaconda3-2022.05-Linux-x86_64.sh'''
-  * '''export PATH=/home/ubuntu/anaconda3/bin:$PATH'''
-  * '''conda update conda'''
+  * ```sha256sum Anaconda3-2022.05-Linux-x86_64.sh```
+  * ```sudo wget https://repo.anaconda.com/archive/Anaconda3-2022.05-Linux-x86_64.sh```
+  * ```bash Anaconda3-2022.05-Linux-x86_64.sh```
+  * ```source ~/.bashrc```
+  * ```bash Anaconda3-2022.05-Linux-x86_64.sh```
+  * ```export PATH=/home/ubuntu/anaconda3/bin:$PATH```
+  * ```conda update conda```
 
 Step 4) Set up environment for OpenNMT-py
-* '''conda create -n transformer python=3.6'''
+* ```conda create -n transformer python=3.6```
   * The Python version has to be compatible with CUDA 10.2, your version of OpenNMT-py and PyTorch 1.6.0
-* '''conda activate transformer'''
-* '''conda install pip'''
-* '''pip3 install git'''
-* '''git clone https://github.com/OpenNMT/OpenNMT-py.git'''
-* '''git clone https://github.com/ac2522/SmilesOrSelfies.git'''
-* '''cd OpenNMT-py'''
-* '''pip3 install -e'''
-* '''cd ../SmilesOrSelfies'''
-* '''pip3 install -e'''
+* ```conda activate transformer```
+* ```conda install pip```
+* ```pip3 install git```
+* ```git clone https://github.com/OpenNMT/OpenNMT-py.git```
+* ```git clone https://github.com/ac2522/SmilesOrSelfies.git```
+* ```cd OpenNMT-py```
+* ```pip3 install -e```
+* ```cd ../SmilesOrSelfies```
+* ```pip3 install -e```
 * Move the data folder from /home/ubuntu/SmilesOrSelfies to /home/ubuntu/
 * Download the USPTO data and place in the data folder
   * For the sake of convenience (and memory) delete all USPTO directories, bar STEREO_mixed and MIT_mixed
@@ -121,11 +121,11 @@ Step 5) Data Preparation
 * Since, jupyter notebook was a pain and kept messing up the conda environment, I used ipython and the terminal
 * Rename the files in MIT_mixed to start with "mit-"
   * src-test.txt  ->  mit-src-test.txt
-* To ensure we are all in the same directory: '''cd'''
-* '''ipython'''
+* To ensure we are all in the same directory: ```cd```
+* ```ipython```
 * Prepare data:
 
-'''SMILES_PATH = "data/SMILES/"
+```SMILES_PATH = "data/SMILES/"
 SELFIES_PATH = "data/SELFIES/"
 SMILES_AUG_PATH = "data/SMILES_aug/"
 DEEPSMILES_PATH = "data/DeepSMILES/"
@@ -144,7 +144,7 @@ smilesToDeepSmiles(SMILES_PATH, DEEPSMILES_PATH, True, ["tgt", "src"])
 transformSmilesData(SMILES_PATH, randomizeSmiles, new_path=SMILES_AUG_PATH, shuffle_pos=True)
 
 # Checks all data transformations/conversions worked
-checkFormatting(NAMES, 5, [SMILES_PATH, SMILES_AUG_PATH, SELFIES_PATH, DEEPSMILES_PATH])'''
+checkFormatting(NAMES, 5, [SMILES_PATH, SMILES_AUG_PATH, SELFIES_PATH, DEEPSMILES_PATH```
 
 
 export PATH=/home/ubuntu/anaconda3/bin:$PATH
