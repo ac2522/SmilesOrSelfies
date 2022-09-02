@@ -1,8 +1,7 @@
 import re
 import os
 import deepsmiles
-import 
-as sf
+import selfies as sf
 from tqdm import tqdm
 from collections import Counter
 from random import randint, seed, shuffle
@@ -17,10 +16,11 @@ def sf_tokenizer(selfies):
     return selfies.replace("][", "] [")
 
 
-# Taken from Molecular Transformer - https://github.com/pschwllr/MolecularTransformer
-# Due to the syntax of DeepSMILES, can be used to transform DEeepSMILES sentences as well
-# Though it might be interesting to see how DeepSMILES based models perform when brackets are tokenized together
-# Would there still be as many issues with faulty bracket numbers
+# Taken from Molecular Transformer - github.com/pschwllr/MolecularTransformer
+# Due to syntax, it can be used to transform DeepSMILES molecules as well
+# Though it might be interesting to see how DeepSMILES based models perform,
+# when brackets are tokenized together.
+# Would there still be as many issues with faulty bracket numbers?
 def smi_tokenizer(smi):
     """
     Tokenize a SMILES molecule or reaction
@@ -52,6 +52,7 @@ def getSharedFile(folders, path="", type_=""):
             global_files.intersection_update(local_files)
 
     return global_files
+
 
 # Returns all files of type 'file_type' from a path
 # If a path is a folder, it will search the folder
@@ -125,7 +126,7 @@ def merge(folders, new_path="", old_path="", randomize=False,
             with open(old_path + folder + txt, 'r') as file:
                 data.extend(file.readlines())
                 data[-1] = data[-1] + "\n"
-                
+
         if randomize:
             seed(seed_no)
             shuffle(data)
@@ -152,7 +153,7 @@ def canonicalizeSmiles(smiles):
     return MolToSmiles(MolFromSmiles(smiles), isomericSmiles=True)
 
 
-# Transforms a single SMILES line  
+# Transforms a single SMILES line
 def transformSmilesLine(line, func, sort=None, shuffle_pos=False):
     chems = [smi_tokenizer(func(re.sub(RMV_SPACE, '', chem)))
              for chem in line.split('.')]
@@ -169,7 +170,8 @@ def transformSmilesLine(line, func, sort=None, shuffle_pos=False):
 # Applies functions to individual lines
 # Used either to canonicalize SMILES, or choose a random representation
 # Can shuffle or order (setting sort as the sorting method)
-def transformSmilesData(path, func, sort=None, new_path=None, shuffle_pos=False):
+def transformSmilesData(path, func, sort=None, new_path=None,
+                        shuffle_pos=False):
     assert type(path) is str
     assert not (sort and shuffle_pos)
 
@@ -199,8 +201,8 @@ def smilesToSelfies(smiles_path, selfies_path, reconcile_errors=False,
 
     smilesConversion(smiles_path, selfies_path, sf.encoder, sf_tokenizer,
                      reconcile_errors, diff_between, verbose)
-    
-    
+
+
 # Converts files of SMILES representations into DeepSMILES representations.
 # All failed conversions will be left as blank lines,
 # reconcile_errors removes blank line from SMILES and SELFIES representations.
@@ -210,9 +212,10 @@ def smilesToDeepSmiles(smiles_path, selfies_path, reconcile_errors=False,
                        diff_between=None, verbose=True):
 
     converter = deepsmiles.Converter(rings=True, branches=True)
-    smilesConversion(smiles_path, selfies_path, converter.encode, smi_tokenizer,
-                     reconcile_errors, diff_between, verbose)
-                
+    smilesConversion(smiles_path, selfies_path, converter.encode,
+                     smi_tokenizer, reconcile_errors, diff_between, verbose)
+
+
 # Converts files of SMILES representations into other representations.
 # All failed conversions will be left as blank lines,
 # reconcile_errors removes blank line from SMILES and SELFIES representations.
@@ -251,7 +254,7 @@ def smilesConversion(smiles_path, new_path, converter, tokenizer,
                     errors[chem] += 1
                 else:
                     errors[chem] = 1
-                    
+
                 converted_lines.append("")
 
         with open(new_path + file.split("/")[-1], 'w') as new_file:
@@ -273,9 +276,10 @@ def smilesConversion(smiles_path, new_path, converter, tokenizer,
             assert type(diff_between) is list and type(diff_between[0])
 
         for file in tqdm(set([rmvDiff(file, diff_between) for file in files])):
-            original_files = [f for f in files if rmvDiff(f, diff_between) == file]
+            original_files = [f for f in files
+                              if rmvDiff(f, diff_between) == file]
             new_files = [new_path + f.split("/")[-1]
-                             for f in rec_files]
+                         for f in rec_files]
 
             removeBlanks(new_files, original_files + new_files)
 
