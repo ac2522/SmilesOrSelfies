@@ -125,7 +125,9 @@ Step 5) Data Preparation
 * ```ipython```
 * Prepare data:
 
-```SMILES_PATH = "data/SMILES/"
+```
+from SmilesOrSelfies.preprocess import transformSmilesData, smilesToSelfies, smilesToDeepSmiles, checkFormatting
+SMILES_PATH = "data/SMILES/"
 SELFIES_PATH = "data/SELFIES/"
 SMILES_AUG_PATH = "data/SMILES_aug/"
 DEEPSMILES_PATH = "data/DeepSMILES/"
@@ -135,7 +137,7 @@ merge(["data/STEREO_mixed/"], SMILES_PATH, randomize=True, verbose=False)
 merge(["data/MIT_mixed/"], SMILES_PATH, randomize=True, verbose=False)
 merge(["data/common/"], SMILES_PATH, randomize=False, verbose=False)
 
-ransformSmilesData(SMILES_PATH, canonicalizeSmiles, sort=len)
+transformSmilesData(SMILES_PATH, canonicalizeSmiles, sort=len)
 
 smilesToSelfies(SMILES_PATH, SELFIES_PATH, True, ["tgt", "src"])
 
@@ -144,7 +146,22 @@ smilesToDeepSmiles(SMILES_PATH, DEEPSMILES_PATH, True, ["tgt", "src"])
 transformSmilesData(SMILES_PATH, randomizeSmiles, new_path=SMILES_AUG_PATH, shuffle_pos=True)
 
 # Checks all data transformations/conversions worked
-checkFormatting(NAMES, 5, [SMILES_PATH, SMILES_AUG_PATH, SELFIES_PATH, DEEPSMILES_PATH```
+checkFormatting(NAMES, 5, [SMILES_PATH, SMILES_AUG_PATH, SELFIES_PATH, DEEPSMILES_PATH])
+
+exit()```
+
+
+Step 6) Run the Machine
+* We have 4 sets of data and only 1 gpu. We can't run it all at once. So we either:
+  * Wait for it to train each
+  * OR we set up 4 servers
+   * This does not require doing all the above 5 steps again (THANK GOD!)
+* To duplicate a selected EC2 instance:
+  * Click 'actions' -> 'Image and Templates' -> Create Image
+  * Give it a name, then 'Create Image'
+  * Create a new instance, the same as the original
+   * EXCEPT instead of the Deep Learning AMI, select 'My AMI' and scroll down to find the one you just created 
+
 
 
 export PATH=/home/ubuntu/anaconda3/bin:$PATH
