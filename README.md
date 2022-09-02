@@ -223,8 +223,9 @@ Step 2)
 * Processing the data is the same as OpenNMT-py
 * Create a vocabulary - using function ```onmt-build-vocab()```
   * Just add in paths pretty much
-  * the saring of vocabs between src and tgt, occurs in training parametization
-* To train run ```!python tf_configs/train.py```
+  * the sharing of vocabs between src and tgt, occurs in training parametization
+* You have to build a runner class, to train the model, so we write a python file
+* To train and test run ```tf_configs/train_test.py```
   * May need slight adjustments to paths
   * Also running the evaluation will need some parametization 
 
