@@ -36,7 +36,7 @@ If your PC does not have a GPU or has a GPU incompatible with the specified Tens
 ### OpenNMT-py
 This section covers how to set up an environment on AWS EC2. It can obviously be set up on any server, but AWS is the most global (and Google Cloud holds prejudicial views towards students)  
 
-Step 1) Create an instance 
+Step 1) Create an instance
 * Having set up an AWS account, you will not be allowed to use GPU servers, you must request a quota increase from your console. This may take several days.
   * Also the quota is region locked. So remember what region you requested gpu instance access for
   * Make sure that the region you are requesting hosts the particular instance you weant to use
@@ -56,20 +56,62 @@ Step 2) launch instance
    * Both Putty and WinSCP will require you to change the format of the key, which can be done with PuttyGen (a different software than Putty)
 * For the Amazon Linux 2 servers, your primary username is ubuntu
   * This is different for Ubuntu based AWS servers, which usually have primary username set to ec2-user
-* The address for your EC2 server
+* The address for your EC2 server is listed in details, under 'Public IPv4 DNS'
+* You will be charged for every second you server is running, so stop the instance when not in use.
+* Occasionally when booting up an  instance, there will be no availability, just wait patiently, twiddle you thumbs.
+  * The longest it took for me was 6 hours. But, usually there are no problems.
 
-Step 2) Set up environment
+Step 3) Set up server
+* Many of the AMI's such as Deep Learning V49, have multiple CUDA versions installed.
+  * Check cuda version with '''nvcc --version'''
+  * If the starting version isn't correct, you will need to change version, by deleting old and copying 10.1/10.2 into the CUDA folder
+   * '''sudo rm /usr/local/cuda'''
+   * '''sudo ln -s /usr/local/cuda-10.2 /usr/local/cuda'''
+* Check cuda is running:
+  * '''pip3 install torch==1.6.0 torchvision==0.7.0'''
+   * Your pytorch install command will depend on your CUDA and OS: https://pytorch.org/get-started/previous-versions/  
+  * Open Python terminal with '''ipython'''
+  * '''import torch'''
+  * '''torch.cuda.is_available()'''
+   * If True then it's working, if False, then you'll need to do some error testing.
+  * Top exit ipython '''exit()'''  
+* Typical Linux commands to initialize environment: 
+  * '''sudo apt-get upgrade'''
+  * '''sudo apt-get update'''
+  * '''sudo apt-get install curl'''
+  * '''export PATH=/home/ubuntu/.local/bin:$PATH'''
+  * Depending on the os, sometimes 'sudo' is replaced by 'yum'
+* Setting up Anaconda is an oddly complex task, you can follow the full guide here - https://phoenixnap.com/kb/how-to-install-anaconda-ubuntu-18-04-or-20-04
+  * The right Anaconda hash can be found here: https://docs.anaconda.com/anaconda/install/hashes/Anaconda3-2019.03-Linux-x86_64.sh-hash/
+  * The commands I used (My Linux expertise is limited, so I can't tell you what did what)
+  * '''cd /tmp'''
+  * '''curl –O https://repo.anaconda.com/archive/Anaconda3-2022.05-Linux-x86_64.sh'''
+   * Theres a number of simple prompts, you need to answer yes to.
+  * '''sha256sum Anaconda3-2022.05-Linux-x86_64.sh'''
+  * '''sudo wget https://repo.anaconda.com/archive/Anaconda3-2022.05-Linux-x86_64.sh'''
+  * '''bash Anaconda3-2022.05-Linux-x86_64.sh'''
+  * '''source ~/.bashrc'''
+  * '''bash Anaconda3-2022.05-Linux-x86_64.sh'''
+  * '''export PATH=/home/ubuntu/anaconda3/bin:$PATH'''
+  * '''conda update conda'''
 
-Ensure correct Cuda version (with above you need to change version, by deleting old and copying 10.2 into folder)
+Step 4) Set up environment for OpenNMT-py
+* '''conda create -n transformer python=3.6'''
+  * The Python version has to be compatible with CUDA 10.2, your version of OpenNMT-py and PyTorch 1.6.0
+* '''conda activate transformer'''
+* '''conda install pip'''
+* '''pip3 install git'''
+* '''git clone https://github.com/OpenNMT/OpenNMT-py.git'''
+* '''git clone https://github.com/ac2522/SmilesOrSelfies.git'''
+* '''cd OpenNMT-py'''
+* '''pip3 install -e'''
+* '''cd ../SmilesOrSelfies'''
+* '''pip3 install -e'''
+* Move the data folder from /home/ubuntu/SmilesOrSelfies to /home/ubuntu/
+* Download the USPTO data and place in the data folder
+  * For the sake of convenience (and memory) delete all USPTO directories, bar STEREO_mixed and MIT_mixed
+   * Even within MIT_mixed you might as well delete all but the test data
 
-sudo rm /usr/local/cuda
-sudo ln -s /usr/local/cuda-10.2 /usr/local/cuda
-export PATH=/home/ubuntu/.local/bin:$PATH
-
-
-
-SET UP ANACONDA - this is an oddly complex task - https://phoenixnap.com/kb/how-to-install-anaconda-ubuntu-18-04-or-20-04
-Slect right version - hashes https://docs.anaconda.com/anaconda/install/hashes/Anaconda3-2019.03-Linux-x86_64.sh-hash/
 
 export PATH=/home/ubuntu/anaconda3/bin:$PATH
 export PATH=/home/ubuntu/anaconda3/bin:$PATH
