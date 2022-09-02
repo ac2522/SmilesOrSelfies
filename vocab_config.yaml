@@ -1,0 +1,21 @@
+## Where the samples will be written
+save_data: ../data/Smiles/Smiles
+## Where the vocab(s) will be written
+src_vocab: ../data/Smiles/Smiles_c.vocab.src
+tgt_vocab: ../data/Smiles/Smiles_c.vocab.tgt
+share_vocab: True
+
+src_seq_length: 1000
+tgt_seq_length: 1000
+src_vocab_size: 1000
+tgt_vocab_size: 1000
+
+
+# Corpus opts:
+data:
+    corpus_1:
+        path_src: ../data/Smiles/src-train.txt
+        path_tgt: ../data/Smiles/tgt-train.txt
+    valid:
+        path_src: ../data/Smiles/src-val.txt
+        path_tgt: ../data/Smiles/tgt-val.txt
