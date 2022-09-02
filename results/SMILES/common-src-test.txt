@@ -1,0 +1,19 @@
+C C O . C C C ( = O ) O
+C C O . C C C ( = O ) O . O = S ( = O ) ( O ) O
+O = C O . C C C C C O
+O = C O . C C C C C O . O = S ( = O ) ( O ) O
+O O . [Fe]
+O . O O . [Fe]
+Cl . [OH-] . [Na+]
+O . Cl . [OH-] . [Na+]
+O = [Cu] . O = S ( = O ) ( O ) O
+O . O = [Cu] . O = S ( = O ) ( O ) O
+O . O = C = O
+Cl . [Al]
+[C-] # N . C C ( C ) ( C ) Cl
+[C-] # N . C C ( C ) = O . C C ( C ) ( C ) Cl
+[OH-] . [Na+] . Br C 1 C C C C C 1
+Cl . [Na]
+[Mg] . O = O
+O . Cl . [Zn]
+[F-] . Br Br . [Na+]
