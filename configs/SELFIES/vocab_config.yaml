@@ -1,0 +1,21 @@
+## Where the samples will be written
+save_data: data/SELFIES/SELFIES
+## Where the vocab(s) will be written
+src_vocab: data/SELFIES/SELFIES.vocab.src
+tgt_vocab: data/SELFIES/SELFIES.vocab.tgt
+share_vocab: True
+
+src_seq_length: 1000
+tgt_seq_length: 1000
+src_vocab_size: 1000
+tgt_vocab_size: 1000
+
+
+# Corpus opts:
+data:
+    corpus_1:
+        path_src: data/SELFIES/src-train.txt
+        path_tgt: data/SELFIES/tgt-train.txt
+    valid:
+        path_src: data/SELFIES/src-val.txt
+        path_tgt: data/SELFIES/tgt-val.txt
