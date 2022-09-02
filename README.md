@@ -1,30 +1,28 @@
 # SmilesOrSelfies
-Predicting chemical reactions with different representations of chemicals structures
+Predicting chemical reactions with different representations of chemicals structures.
+The paramaterization of this model has been taken from https://github.com/pschwllr/MolecularTransformer.
 
+## DATA
+* [**USPTO_MIT** dataset](https://github.com/wengong-jin/nips17-rexgen)
+* [**USPTO_STEREO** dataset](https://ibm.box.com/v/ReactionSeq2SeqDataset) 
+* [*Handmade** dataset](https://github.com/ac2522/SmilesOrSelfies/data)
+
+Both USPTO datasets are filtered and modified from data extracted by Daniel Lowe. The main difference being that the MIT dataset filters out stereochemistry. The data can be downloaded from here: https://ibm.box.com/v/MolecularTransformerData
+The handmade data, is made up of basic equations outside of the training data chemical space, Most of the reactions do not contain organic compounds.
 
 ## There are 2 methods:
-OpenNMT-tf and OpenNMT-py for different PC/GPU capabilities. 
+For different PC / GPU capabilities. 
 * OpenNMT-py requires PyTorch<=1.6.0, meaning max of CUDA version 10.2. 
   * The documentation will demonstrate how to run on a local machine.
 * OpenNMT-tf requires TensorFlow 2.6, 2.7, 2.8, or 2.9, which gives broader CUDA compatability.
   * The documentation will demonstrate how to run on an AWS EC2 instance.
-OpenNMT-py will contain an explanation on how to run from your own PC/ 
 
-
-
-* [**USPTO_MIT** dataset](https://github.com/wengong-jin/nips17-rexgen) USPTO/data.zip
-* [**USPTO_STEREO** dataset](https://ibm.box.com/v/ReactionSeq2SeqDataset) US_patents_1976-Sep2016_*
-
-Both are subsets from data extracted and originally published by Daniel Lowe (many thanks for that!).
-preprocess.py was taken from MolecuarTransformer (https://github.com/pschwllr/MolecularTransformer)
-
-Download data from here: https://ibm.box.com/v/MolecularTransformerData
 
 Update your Nvidia Driver and ascertain it's compatability with CUDA versions.
 If your PC does not have a GPU or has a GPU incompatible with CUDA<=10.2, follow the instructions for openNMT-tf a 
 
 
-https://github.com/pschwllr/MolecularTransformer
+
 
 
 Step 1) Create Instance CUDA 10.1/10.2 compatable instance (Identify the GPU and check https://www.nvidia.com/Download/Find.aspx). For ease choose an AMI with CUDA 10.2 pre-installed (Deep Learning AMI (Amazon Linux 2) Version 49.0), this means g5's arent compatable as they use
@@ -108,3 +106,27 @@ Running from Ipykernel or Ipbny or python file:
 
 
 
+
+```
+from score import canonDeepSmiles, canonSMILES, canonSelfies, inferenceAnalysis
+import pandas as pd
+
+canons = [canonDeepSmiles, canonSMILES, canonSMILES, canonSelfies]
+langs = ["DeepSMILES", "SMILES", "SMILES_aug", "SELFIES"]
+ns = [1, 3, 5, 10]
+
+accuracies = []
+errors = []
+for dataset in ["", "mit-", "common-", ]:
+    for canon, lang in zip(canon, langs):
+        acc, err = inferenceAnalysis(f'../data/{lang}/{dataset}test_results.txt', '../data/{lang}/{dataset}tgt-test.txt', 10, canon, ns, verbose=0)
+        accuracies.append(acc)
+        errors.append(err)
+    print(dataset)
+    print("Accuracy:")
+    print(pd.DataFrame(accuracies, index=langs))
+    print("Errors:")
+    print(pd.DataFrame(errors, index=langs))
+```
+
+This will print out the accuracy and errors for each representation for each database tested upon.
