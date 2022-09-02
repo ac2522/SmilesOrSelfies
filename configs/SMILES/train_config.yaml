@@ -1,14 +1,14 @@
 data:
     corpus_1:
-        path_src: ../data/Smiles/src-train.txt
-        path_tgt: ../data/Smiles/tgt-train.txt
+        path_src: data/SMILES/src-train.txt
+        path_tgt: ../data/SMILES/tgt-train.txt
     valid:
-        path_src: ../data/Smiles/src-val.txt
-        path_tgt: ../data/Smiles/tgt-val.txt
+        path_src: ../data/SMILES/src-val.txt
+        path_tgt: ../data/SMILES/tgt-val.txt
 
 share_vocab: True
-src_vocab: ../data/Smiles/Smiles_c.vocab.src
-save_model: ../data/Smiles/model
+src_vocab: ../data/SMILES/SMILES.vocab.src
+save_model: ../data/SMILES/model
 
 save_checkpoint_steps: 10000
 train_steps: 500000
