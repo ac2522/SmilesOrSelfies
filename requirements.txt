@@ -1,1 +1,10 @@
-Opennmt-tf
+six
+tqdm
+selfies
+rdkit
+numpy
+pandas
+cairosvg
+deepsmiles
+matplotlib
+seaborn
