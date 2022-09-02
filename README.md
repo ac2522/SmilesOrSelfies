@@ -1,5 +1,6 @@
 # SmilesOrSelfies
 Predicting chemical reactions with different representations of chemicals structures.
+
 The paramaterization of this model has been taken from https://github.com/pschwllr/MolecularTransformer.
 
 ## DATA
@@ -12,14 +13,14 @@ The handmade data, is made up of basic equations outside of the training data ch
 
 ## There are 2 methods:
 For different PC / GPU capabilities. 
-* OpenNMT-py requires PyTorch<=1.6.0, meaning max of CUDA version 10.2. 
-  * The documentation will demonstrate how to run on a local machine.
 * OpenNMT-tf requires TensorFlow 2.6, 2.7, 2.8, or 2.9, which gives broader CUDA compatability.
+  * The documentation will demonstrate how to run on a local machine.
+* OpenNMT-py requires PyTorch<=1.6.0, meaning max of CUDA version 10.2. 
   * The documentation will demonstrate how to run on an AWS EC2 instance.
 
 
-Update your Nvidia Driver and ascertain it's compatability with CUDA versions.
-If your PC does not have a GPU or has a GPU incompatible with CUDA<=10.2, follow the instructions for openNMT-tf a 
+Update your Nvidia Driver and ascertain it's compatability with CUDA versions: https://www.nvidia.com/Download/Find.aspx
+If your PC does not have a GPU or has a GPU incompatible with CUDA<=10.2, set up with openNMT-PY
 
 
 
@@ -105,7 +106,7 @@ Running from Ipykernel or Ipbny or python file:
      !python
 
 
-
+## Convergence
 
 ```
 from score import canonDeepSmiles, canonSMILES, canonSelfies, inferenceAnalysis
