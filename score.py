@@ -3,7 +3,6 @@ import deepsmiles
 import numpy as np
 import pandas as pd
 import selfies as sf
-import matplotlib.pyplot as plt
 from rdkit.Chem import MolFromSmiles, MolToSmiles
 
 
