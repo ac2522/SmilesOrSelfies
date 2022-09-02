@@ -8,7 +8,7 @@ The paramaterization of this model has been taken from https://github.com/pschwl
 * [**USPTO_STEREO** dataset](https://ibm.box.com/v/ReactionSeq2SeqDataset) 
 * [*Handmade** dataset](https://github.com/ac2522/SmilesOrSelfies/data)
 
-Both USPTO datasets are filtered and modified from data extracted by Daniel Lowe. The main difference being that the MIT dataset filters out stereochemistry. The data can be downloaded from here: https://ibm.box.com/v/MolecularTransformerData
+Originally the model was trained on a combination of MIT and USPTO, but since they are both extracted from the same database, the code was changed to only train on STEREO. Both USPTO datasets are filtered and modified from US reaction patent data extracted by Daniel Lowe. The main difference being that the MIT dataset filters out stereochemistry. The data can be downloaded from here: https://ibm.box.com/v/MolecularTransformerData
 
 The handmade data, is made up of basic equations outside of the training data chemical space. Most of the reactions do not contain organic compounds.
 
@@ -110,7 +110,41 @@ Step 4) Set up environment for OpenNMT-py
 * Move the data folder from /home/ubuntu/SmilesOrSelfies to /home/ubuntu/
 * Download the USPTO data and place in the data folder
   * For the sake of convenience (and memory) delete all USPTO directories, bar STEREO_mixed and MIT_mixed
-   * Even within MIT_mixed you might as well delete all but the test data
+   * Within MIT_mixed you might as well delete all but the test data
+* Within the data folder create 4 folders: SMILES, SMILES_aug, DeepSMILES, SELFIES
+  * SMILES is the base synatax as implemented by the Molecular Transformer
+  * SMILES_aug, is the same as SMILES but without canonicalization and with random ordering of molecules
+  * DeepSMILES is a modified syntax of SMILES that is meant to improve neural network syntax
+  * SELFIES a whole new syntax, designed to be 100% robust
+
+Step 5) Data Preparation
+* Since, jupyter notebook was a pain and kept messing up the conda environment, I used ipython and the terminal
+* Rename the files in MIT_mixed to start with "mit-"
+  * src-test.txt  ->  mit-src-test.txt
+* To ensure we are all in the same directory: '''cd'''
+* '''ipython'''
+* Prepare data:
+
+'''SMILES_PATH = "data/SMILES/"
+SELFIES_PATH = "data/SELFIES/"
+SMILES_AUG_PATH = "data/SMILES_aug/"
+DEEPSMILES_PATH = "data/DeepSMILES/"
+NAMES = ['src-train.txt', 'tgt-train.txt', 'src-val.txt', 'tgt-val.txt', 'src-test.txt', 'tgt-test.txt', 'mit-src-test.txt', 'mit-tgt-test.txt', 'common-src-test.txt', 'common-tgt-test.txt']
+
+merge(["data/STEREO_mixed/"], SMILES_PATH, randomize=True, verbose=False)
+merge(["data/MIT_mixed/"], SMILES_PATH, randomize=True, verbose=False)
+merge(["data/common/"], SMILES_PATH, randomize=False, verbose=False)
+
+ransformSmilesData(SMILES_PATH, canonicalizeSmiles, sort=len)
+
+smilesToSelfies(SMILES_PATH, SELFIES_PATH, True, ["tgt", "src"])
+
+smilesToDeepSmiles(SMILES_PATH, DEEPSMILES_PATH, True, ["tgt", "src"])
+
+transformSmilesData(SMILES_PATH, randomizeSmiles, new_path=SMILES_AUG_PATH, shuffle_pos=True)
+
+# Checks all data transformations/conversions worked
+checkFormatting(NAMES, 5, [SMILES_PATH, SMILES_AUG_PATH, SELFIES_PATH, DEEPSMILES_PATH])'''
 
 
 export PATH=/home/ubuntu/anaconda3/bin:$PATH
