@@ -84,6 +84,11 @@ def print_errors(test_data, canon_smiles, verbose=2):
 # Where ns is the set of different n_best values to explore
 # beam is the number of predictions for each equation
 # canon_smiles, is the function required to transform data to canonical SMILES
+# Verbosity on scale 0-3:
+# 0 - silence
+# 1 - accuracy and errors for chosen ns
+# 2 - 1 and print occurences of different error types
+# 3 - 1 and 2 and prints the target and predicted strings of errors to compare
 def inferenceAnalysis(test_results, targets, beam,
                       canon_smiles, ns, verbose=1):
     assert max(ns) <= beam
