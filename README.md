@@ -31,8 +31,9 @@ If your PC does not have a GPU or has a GPU incompatible with the specified Tens
 This section covers how to set up an environment on AWS EC2. It can obviously be set up on any server, but AWS is the most global (and Google Cloud holds prejudicial views towards students)  
 
 
-# Results
+# Setup
 Includes example results for just handmade (common) database, as all other files were too big to load into GitHub.
+
 Step 1) Create an instance
 * Having set up an AWS account, you will not be allowed to use GPU servers, you must request a quota increase from your console. This may take several days.
   * Also the quota is region locked. So remember what region you requested gpu instance access for
